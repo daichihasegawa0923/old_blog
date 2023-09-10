@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import * as dayjs from "dayjs";
 import { BaseEntity } from "src/common/domain/entity/BaseEntity";
 import { Token } from "../value/token.value";
 import { UserId } from "../value/userId.value";

@@ -9,7 +9,7 @@ export class SecretEntity extends BaseEntity {
         return this._userId;
     }
 
-    private set userId(v: UserId) {
+    public set userId(v: UserId) {
         this._userId = v;
     }
 
@@ -19,7 +19,7 @@ export class SecretEntity extends BaseEntity {
         return this._password;
     }
 
-    private set password(v: Password) {
+    public set password(v: Password) {
         this._password = v;
     }
 

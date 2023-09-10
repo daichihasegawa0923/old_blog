@@ -10,7 +10,7 @@ export class MailAddressEntity extends BaseEntity {
         return this._userId;
     }
 
-    private set userId(v: UserId) {
+    public set userId(v: UserId) {
         this._userId = v;
     }
 
@@ -20,7 +20,7 @@ export class MailAddressEntity extends BaseEntity {
         return this._address;
     }
     
-    private set address(v : MailAddress) {
+    public set address(v : MailAddress) {
         this._address = v;
     }
 

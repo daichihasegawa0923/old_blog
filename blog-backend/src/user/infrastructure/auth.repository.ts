@@ -1,13 +1,16 @@
+import { Injectable } from "@nestjs/common";
 import { AuthEntity } from "../domain/model/auth.entity";
 import { IAuthRepository } from "../domain/repository/auth.repository";
 import { Token } from "../domain/value/token.value";
 import { UserId } from "../domain/value/userId.value";
 import { PrismaRepositoryBase } from "./prisma.repository.base";
 
+@Injectable()
 export class AuthRepository extends PrismaRepositoryBase implements IAuthRepository {
 
     async findByUserId(userId: UserId): Promise<AuthEntity[]> {
         const authData = await this.prismaService.auth.findMany({where: {userId: userId.value}});
+        if (!authData) return null;
         const authEntities: AuthEntity[] = authData.map(data => {
             const entity = new AuthEntity();
             entity.id = data.id;

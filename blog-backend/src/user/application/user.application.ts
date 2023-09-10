@@ -1,3 +1,4 @@
+import { Inject, Injectable } from "@nestjs/common";
 import { ErrorType } from "src/common/dto/request/error";
 import { Result, ResultEmpty } from "src/common/dto/request/result";
 import { AuthEntity } from "../domain/model/auth.entity";
@@ -15,17 +16,24 @@ import { UserId } from "../domain/value/userId.value";
 import { UserName } from "../domain/value/userName.value";
 import { AuthCommand } from "./command/auth.command";
 import { LoginCommand } from "./command/login.command";
-import { UserRegisterCommand } from "./command/user.register.command";
+import { RegisterCommand } from "./command/register.command";
 
+@Injectable()
 export class UserApplication {
-    private userRepo: IUserRepository;
-    private authRepo: IAuthRepository;
-    private secretRepo: ISecretRepository;
-    private mailAddressRepo: IMailAddressRepository;
+    constructor(
+        @Inject("IUserRepository")
+        private readonly userRepo: IUserRepository,
+        @Inject("IAuthRepository")
+        private readonly authRepo: IAuthRepository,
+        @Inject("ISecretRepository")
+        private readonly secretRepo: ISecretRepository,
+        @Inject("IMailAddressRepository")
+        private readonly mailAddressRepo: IMailAddressRepository
+    ){}
 
-    public async register(cmd: UserRegisterCommand): Promise<Result> {
+    public async regist(cmd: RegisterCommand): Promise<Result> {
         const address = new MailAddress(cmd.mailAddress);
-        const password = new Password(cmd.password);
+        const password = Password.create(cmd.password);
         const name = new UserName(cmd.name);
         const errors: ErrorType[] = [];
         if (await this.mailAddressRepo.findByAddress(address)) {

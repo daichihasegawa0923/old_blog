@@ -7,13 +7,18 @@ export class Password extends StringValue {
 
     constructor(value: string) {
         super();
-        if (!this.isValid(value)) {
-            throw new Error("不正なパスワードです。");
-        }
-        this.value = this.toHash(value);
+        this.value = value;
     }
 
-    private isValid(value: string): boolean {
+    public static create(value: string) {
+        if (!Password.isValid(value)) {
+            throw new Error("不正なパスワードです。");
+        }
+        const hashed = Password.toHash(value);
+        return new Password(hashed);
+    }
+
+    private static isValid(value: string): boolean {
         if(!value) return false;
         if (value.length < Password.MIN_LENGTH
             || value.length > Password.MAX_LENGTH) {
@@ -22,7 +27,7 @@ export class Password extends StringValue {
         return true;
     }
 
-    private toHash(value: string): string {
+    private static toHash(value: string): string {
         return hashSync(value, 10);
     }
 

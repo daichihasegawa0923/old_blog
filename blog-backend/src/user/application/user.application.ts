@@ -64,7 +64,7 @@ export class UserApplication {
     }
 
     public async login(cmd: LoginCommand): Promise<Result> {
-        const address = new MailAddress(cmd.address);
+        const address = new MailAddress(cmd.mailAddress);
         const mailaddress = await this.mailAddressRepo.findByAddress(address);
         const errors: ErrorType[] = [];
         const secret = (
@@ -95,7 +95,8 @@ export class UserApplication {
         const userId = new UserId(cmd.userId);
         const auth = 
         (await this.authRepo.findByUserId(userId))
-        .find(a => !a.delete && a.isActive() && a.token.equals(token));
+        .find(a => !a.deleted && a.isActive() && a.token.equals(token));
+        console.log(auth);
         return { body: !!auth };
     }
  }

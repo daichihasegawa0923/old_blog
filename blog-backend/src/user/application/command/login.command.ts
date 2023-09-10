@@ -1,4 +1,4 @@
 export type LoginCommand = {
-    address: string,
+    mailAddress: string,
     password: string
 }

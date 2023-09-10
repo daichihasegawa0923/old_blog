@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @db.VarChar(26)
+  name String @db.VarChar(100)
+
+  profile Profile?
+  secrets Secret[]
+  authes Auth[]
+  mailAddresses MailAddress[]
+  
+  deleted Boolean @default(false)
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
+
+model Profile {
+  id String @id @db.VarChar(26)
+  userId String @db.VarChar(26) @unique
+  profile String @db.Text
+
+  user User @relation(fields: [userId], references: [id])
+  
+  deleted Boolean @default(false)
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
+
+model Secret {
+  id String @id @db.VarChar(26)
+  userId String @db.VarChar(26)
+  password String @db.Text
+
+  user User @relation(fields: [userId], references: [id])
+
+  deleted Boolean @default(false)
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
+
+model MailAddress {
+  id String @id @db.VarChar(26)
+  userId String @db.VarChar(26)
+  address String @db.VarChar(256) @unique
+
+  user User @relation(fields: [userId], references: [id])
+
+  deleted Boolean @default(false)
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
+
+model Auth {
+  id String @id @db.VarChar(26)
+  userId String @db.VarChar(26)
+  token String @db.Text
+  expireDate DateTime
+
+  user User @relation(fields: [userId], references: [id])
+  
+  deleted Boolean @default(false)
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  @@index([userId])
+}

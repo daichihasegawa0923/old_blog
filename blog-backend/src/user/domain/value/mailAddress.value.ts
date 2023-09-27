@@ -2,8 +2,7 @@ import { StringValue } from "src/common/domain/value/StringValue";
 
 export class MailAddress extends StringValue {
 
-    private static REGEX = 
-     /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
+    private static REGEX = /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
 
     constructor(address: string) {
         super();

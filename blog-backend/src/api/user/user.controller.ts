@@ -1,20 +1,20 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
-import { Result } from "src/common/dto/request/result";
-import { RegisterCommand } from "src/user/application/command/register.command";
+import { Body, Controller, HttpException, HttpStatus, Post } from "@nestjs/common";
+import { RegisterCommand, RegisterValidation } from "src/user/application/command/register.command";
 import { UserApplication } from "src/user/application/user.application";
+import { validate } from "src/validation/validation.checker";
 
 @Controller('/user')
 export class UserController{
 
     constructor(private readonly userApplication: UserApplication){}
 
-    @Post()
-    async regist(@Body() cmd: RegisterCommand): Promise<Result> {
+    @Post('regist')
+    async regist(@Body() cmd: RegisterCommand) {
         try {
-            return await this.userApplication.regist(cmd);
-        } catch(e) {
-            console.log(e);
-            return {errors: [{text: e.message, code: 'ERROR'}]};
+        validate(cmd, new RegisterValidation());
+        return await this.userApplication.regist(cmd);
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -1,14 +1,13 @@
 import { ValidationChecker } from "src/validation/validation.checker";
-import { ValidationErrorMessage } from "src/validation/validation.error";
 
-export type RegisterCommand = {
-    name: string;
-    mailAddress: string;
-    password: string;
+export class RegisterView {
+    public mailAddress: string;
+    public password: string;
+    public name: string;
 }
 
-export class RegisterValidation {
-    public readonly mailAddress: ValidationChecker = {
+class RegisterValidation {
+    private mailAddress: ValidationChecker = {
         code: 'mailaddress',
         regex: {
             value: /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/,
@@ -19,7 +18,7 @@ export class RegisterValidation {
             error: {message: '必須項目です。'}
         }
     } 
-    public readonly password: ValidationChecker = {
+    private password: ValidationChecker = {
         code: 'password',
         lengthMin: {
             value: 6,
@@ -34,15 +33,15 @@ export class RegisterValidation {
             error: {message: '必須項目です。'}
         }
     }
-    public readonly name: ValidationChecker = {
+    private name: ValidationChecker = {
         code: 'name',
         lengthMin: {
             value: 3,
-            error: {message: 'ユーザー名は3文字以上で入力してください。'}
+            error: {message: 'パスワードは6文字以上で入力してください。'}
         },
         lengthMax: {
             value: 15,
-            error: { message: 'ユーザー名は15文字以内で入力してください。'}
+            error: { message: 'パスワードは20文字以内で入力してください。'}
         },
         required: {
             value: true,
